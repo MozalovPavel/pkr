@@ -1,0 +1,25 @@
+.suits > div,
+.faces > div{
+	display: inline-block;
+}
+
+#deck,
+#NewDeck{
+	width: 950px;
+}
+img{
+	width: 120px;
+	padding: 5px;
+}
+.pvp{
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
+}
+.table{
+width: 100%;
+}
+
+.player{
+	width: 50%;
+}
