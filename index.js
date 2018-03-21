@@ -111,28 +111,28 @@ function sortCards(cards, bool) {
 }
 
 function randomInteger(min, max) {
-    var rand = min - 0.5 + Math.random() * (max - min + 1);
+    let rand = min - 0.5 + Math.random() * (max - min + 1);
     rand = Math.round(rand);
     return rand;
 }
 
 function getRandomCards(num, arr) {
-    var deck = sortCards(deckGen(), true);
+    let deck = sortCards(deckGen(), true);
     if (num > deck.length) { num = deck.length }
-    var check = [];
-    var newDeck = [];
-    //    if (arr){}
-    if (typeof(arr) == "object") {
+    let check = [];
+    let newDeck = [];
+    if (arr) {
+        // if (typeof(arr) == "object") {
         if (num > deck.length - arr.length) { num = deck.length - arr.length }
 
-        for (var i = 0; i < arr.length; i++) {
+        for (let i = 0; i < arr.length; i++) {
             check[arr[i].id] = true;
         }
     }
     //let cnc = 0;
     while (newDeck.length < num) {
         // можно реализовать просто брать сверху колоды
-        var r = randomInteger(1, 52);
+        let r = randomInteger(1, 52);
         //cnc++;
         if (!check[r]) {
             // console.log(r);
@@ -146,7 +146,7 @@ function getRandomCards(num, arr) {
 
 // function test(n) {
 //     let check = 0;
-//     for (var i = 0; i < n; i++) {
+//     for (let i = 0; i < n; i++) {
 //         let a = getRandomCards(9);
 //         if (a>check){
 //             check=a;
@@ -157,8 +157,8 @@ function getRandomCards(num, arr) {
 // }
 
 function connectDecks(a, b) {
-    var c = [];
-    for (var i = 0; i < a.length; i++) {
+    let c = [];
+    for (let i = 0; i < a.length; i++) {
         c[c.length] = {};
         c[c.length - 1].name = a[i].name;
         c[c.length - 1].suit = a[i].suit;
@@ -166,7 +166,7 @@ function connectDecks(a, b) {
         c[c.length - 1].face = a[i].face;
         c[c.length - 1].value = a[i].value;
     }
-    for (var i = 0; i < b.length; i++) {
+    for (let i = 0; i < b.length; i++) {
         c[c.length] = {};
         c[c.length - 1].name = b[i].name;
         c[c.length - 1].suit = b[i].suit;
@@ -178,8 +178,8 @@ function connectDecks(a, b) {
 }
 
 function copyDeck(a) {
-    var c = [];
-    for (var i = 0; i < a.length; i++) {
+    let c = [];
+    for (let i = 0; i < a.length; i++) {
         c[c.length] = {};
         c[c.length - 1].name = a[i].name;
         c[c.length - 1].suit = a[i].suit;
@@ -188,16 +188,15 @@ function copyDeck(a) {
         c[c.length - 1].value = a[i].value;
     }
     return c;
-    ƒ
 }
 
 function drawCards(id, cards) {
-    var element = document.getElementById(id);
+    let element = document.getElementById(id);
     while (element.firstChild) {
         element.removeChild(element.firstChild);
     }
-    for (var i = 0; i <= cards.length - 1; i++) {
-        var newImg = document.createElement("img");
+    for (let i = 0; i <= cards.length - 1; i++) {
+        let newImg = document.createElement("img");
         newImg.src = "./cards/" + cards[i].name + ".svg";
         newImg.id = cards[i].name;
         document.getElementById(id).appendChild(newImg);
@@ -205,14 +204,14 @@ function drawCards(id, cards) {
 }
 
 function g() {
-    var table = getRandomCards(5);
+    let table = getRandomCards(5);
     wr("tableCards", table);
     drawCards("table", table);
-    var p1 = getRandomCards(2, table);
+    let p1 = getRandomCards(2, table);
     wr('p1Cards', p1);
-    var tp1 = connectDecks(table, p1);
-    var p2 = getRandomCards(2, tp1);
-    var tp2 = connectDecks(table, p2);
+    let tp1 = connectDecks(table, p1);
+    let p2 = getRandomCards(2, tp1);
+    let tp2 = connectDecks(table, p2);
     isFR(tp1);
     isFR(tp2);
     wr('p2Cards', p2);
@@ -223,7 +222,7 @@ function g() {
 
 function wr(id, arr) {
     document.getElementById(id).value = "";
-    for (var i = 0; i < arr.length; i++) {
+    for (let i = 0; i < arr.length; i++) {
         document.getElementById(id).value += arr[i].name;
         document.getElementById(id).value += ' ';
     }
@@ -232,9 +231,9 @@ function wr(id, arr) {
 //=============
 
 function isFR(a) {
-    let arr = copyDeck(a)
-    var count = [0, 0, 0, 0];
-    for (i = 0; i < arr.length; i++) {
+    let arr = copyDeck(a);
+    let count = [0, 0, 0, 0];
+    for (let i = 0; i < arr.length; i++) {
         switch (arr[i].suit) {
             case "hearts":
                 count[0] += 1;
@@ -250,9 +249,9 @@ function isFR(a) {
                 break;
         }
     }
-    var max = getMaxOfArray(count);
+    let max = getMaxOfArray(count);
     if (max > 4) {
-        var popSuit = '';
+        let popSuit = '';
         switch (max) {
             case count[0]:
                 popSuit = "hearts";
@@ -267,25 +266,25 @@ function isFR(a) {
                 popSuit = "spades";
                 break;
         }
-        var ost = [];
-        for (var i = 0; i < arr.length; i++) {
+        let ost = [];
+        for (let i = 0; i < arr.length; i++) {
             if (!(arr[i].suit === popSuit)) {
                 ost = connectDecks(ost, arr.splice(i, 1));
                 i--;
             }
         }
 
-        var list = []; // list[2]= наличие двойки
-        for (var i = 0; i < arr.length; i++) {
+        let list = []; // list[2]= наличие двойки
+        for (let i = 0; i < arr.length; i++) {
             list[arr[i].value] = 1;
         }
         list[1] = list[14];
-        var cn = 0;
-        for (var i = list.length - 1; i >= 0; i--) {
+        let cn = 0;
+        for (let i = list.length - 1; i >= 0; i--) {
             if (list[i] === 1) {
                 cn += 1;
                 if (i === 10) {
-                    return [true, arr, ost];
+                    return [true, arr, ost, 9];
                 }
             } else {
                 cn = 0;
@@ -298,7 +297,7 @@ function isFR(a) {
 //------------------------------------
 function isSTFL(a) {
     let arr = copyDeck(a);
-    var count = [0, 0, 0, 0];
+    let count = [0, 0, 0, 0];
     for (i = 0; i < arr.length; i++) {
         switch (arr[i].suit) {
             case "hearts":
@@ -315,9 +314,9 @@ function isSTFL(a) {
                 break;
         }
     }
-    var max = getMaxOfArray(count);
+    let max = getMaxOfArray(count);
     if (max > 4) {
-        var popSuit = '';
+        let popSuit = '';
         switch (max) {
             case count[0]:
                 popSuit = "hearts";
@@ -332,25 +331,25 @@ function isSTFL(a) {
                 popSuit = "spades";
                 break;
         }
-        var ost = [];
-        for (var i = 0; i < arr.length; i++) {
+        let ost = [];
+        for (let i = 0; i < arr.length; i++) {
             if (!(arr[i].suit === popSuit)) {
                 ost = connectDecks(ost, arr.splice(i, 1));
                 i--;
             }
         }
 
-        var list = []; // list[2]= наличие двойки
-        for (var i = 0; i < arr.length; i++) {
+        let list = []; // list[2]= наличие двойки
+        for (let i = 0; i < arr.length; i++) {
             list[arr[i].value] = 1;
         }
         list[1] = list[14];
-        var cn = 0;
-        for (var i = list.length - 1; i >= 0; i--) {
+        let cn = 0;
+        for (let i = list.length - 1; i >= 0; i--) {
             if (list[i] === 1) {
                 cn += 1;
                 if (cn === 5) {
-                    return [true, arr, ost];
+                    return [true, arr, ost, 8];
                 }
             } else {
                 cn = 0;
@@ -373,7 +372,7 @@ function isFOAK(a) {
                 i--;
             }
         }
-        return [true, arr, ost];
+        return [true, arr, ost, 7];
     }
     return false;
 }
@@ -393,7 +392,7 @@ function isFH(a) {
                 i--;
             }
         }
-        return [true, arr, ost];
+        return [true, arr, ost, 6];
     }
     return false;
 }
@@ -401,7 +400,7 @@ function isFH(a) {
 
 function isFLSH(a) {
     let arr = copyDeck(a);
-    var count = [0, 0, 0, 0];
+    let count = [0, 0, 0, 0];
     for (i = 0; i < arr.length; i++) {
         switch (arr[i].suit) {
             case "hearts":
@@ -418,9 +417,9 @@ function isFLSH(a) {
                 break;
         }
     }
-    var max = getMaxOfArray(count);
+    let max = getMaxOfArray(count);
     if (max > 4) {
-        var popSuit = '';
+        let popSuit = '';
         switch (max) {
             case count[0]:
                 popSuit = "hearts";
@@ -435,14 +434,14 @@ function isFLSH(a) {
                 popSuit = "spades";
                 break;
         }
-        var ost = [];
-        for (var i = 0; i < arr.length; i++) {
+        let ost = [];
+        for (let i = 0; i < arr.length; i++) {
             if (!(arr[i].suit === popSuit)) {
                 ost = connectDecks(ost, arr.splice(i, 1));
                 i--;
             }
         }
-        return [true, arr, ost];
+        return [true, arr, ost, 5];
     }
     return false;
 }
@@ -478,7 +477,7 @@ function isSTR(a) {
                     }
                 }
 
-                return [true, arr, ost];
+                return [true, arr, ost, 4];
             }
         } else {
             cn = 0;
@@ -499,7 +498,7 @@ function isTHR(a) {
                 i--;
             }
         }
-        return [true, arr, ost];
+        return [true, arr, ost, 3];
     }
     return false;
 }
@@ -529,24 +528,26 @@ function isPRS(a) {
             console.log(ost);
             arr = connectDecks(arr, ost);
             console.log(arr);
-            return [true, arr, ost2, 'two pairs'];
+            return [true, arr, ost2, 2];
         }
-        return [true, arr, ost, 'one pair'];
+        return [true, arr, ost, 1];
     }
     return false;
 }
 //================
-function getHCard(arr) {
+function getHCard(a) {
+    let arr = copyDeck(a);
+    return sortCards(arr)[arr.length - 1];
 
 }
 
 function getComb(arr) {
-    let copy = copyDeck(arr);
+
 
 }
 
-function aaa(arr) {
-    return !!isPRS(arr);
+function get5TopCards(arr, ost) {
+
 }
 
 function getMaxOfArray(numArray) {
@@ -569,7 +570,7 @@ function tt() {
         // console.log(c);
         let b = getRandomCards(7);
         // console.log(b);
-        var a = isPRS(b);
+        let a = isPRS(b);
         if (a[1]) {
             break;
         }
@@ -579,20 +580,67 @@ function tt() {
 }
 
 
-var d = [{ name: "H2", suit: "hearts", id: 1, face: "Two", value: 12 },
-    { name: "H3", suit: "hearts", id: 2, face: "Three", value: 10 },
-    { name: "H3", suit: "hearts", id: 2, face: "Three", value: 9 },
-    { name: "H4", suit: "hearts", id: 3, face: "Four", value: 11 },
-    { name: "H4", suit: "hearts", id: 3, face: "Four", value: 12 },
-    { name: "H5", suit: "hearts", id: 4, face: "Five", value: 13 },
-    { name: "HA", suit: "hearts", id: 13, face: "Ace", value: 14 }
+let flashRoyale = [ // от 10 до туза одной масти
+    { name: "DA", suit: "diamonds", id: 26, face: "Ace", value: 14 },
+    { name: "DT", suit: "diamonds", id: 22, face: "Ten", value: 10 },
+    { name: "DJ", suit: "diamonds", id: 23, face: "Jack", value: 11 },
+    { name: "DQ", suit: "diamonds", id: 24, face: "Queen", value: 12 },
+    { name: "DK", suit: "diamonds", id: 25, face: "King", value: 13 }
 ];
 
-var dd = [{ name: "H2", suit: "hearts", id: 1, face: "Two", value: 12 },
-    { name: "H3", suit: "hearts", id: 2, face: "Three", value: 10 },
-    { name: "H3", suit: "hearts", id: 2, face: "Three", value: 10 },
-    { name: "H4", suit: "hearts", id: 3, face: "Four", value: 11 },
-    { name: "H4", suit: "hearts", id: 3, face: "Four", value: 12 },
-    { name: "H5", suit: "hearts", id: 4, face: "Five", value: 13 },
-    { name: "HA", suit: "hearts", id: 13, face: "Ace", value: 14 }
+let straightFlush = [ //5 карт одной масти в порядке возрастания номинала
+    { name: "D9", suit: "diamonds", id: 21, face: "Nine", value: 9 },
+    { name: "DT", suit: "diamonds", id: 22, face: "Ten", value: 10 },
+    { name: "DJ", suit: "diamonds", id: 23, face: "Jack", value: 11 },
+    { name: "DQ", suit: "diamonds", id: 24, face: "Queen", value: 12 },
+    { name: "DK", suit: "diamonds", id: 25, face: "King", value: 13 }
+];
+
+let fourOfAKind = [ // 4 карты одного номинала
+    { name: "H6", suit: "hearts", id: 5, face: "Six", value: 6 },
+    { name: "D6", suit: "diamonds", id: 18, face: "Six", value: 6 },
+    { name: "C6", suit: "clubs", id: 31, face: "Six", value: 6 },
+    { name: "S6", suit: "spades", id: 44, face: "Six", value: 6 }
+];
+
+let fullHouse = [ // три карты одного номинала и две карты вторго номинала
+    { name: "H6", suit: "hearts", id: 5, face: "Six", value: 6 },
+    { name: "D6", suit: "diamonds", id: 18, face: "Six", value: 6 },
+    { name: "C6", suit: "clubs", id: 31, face: "Six", value: 6 },
+    { name: "DQ", suit: "diamonds", id: 24, face: "Queen", value: 12 },
+    { name: "SQ", suit: "spades", id: 50, face: "Queen", value: 12 }
+];
+
+let flush = [ // 5 карт одной масти
+    { name: "C3", suit: "clubs", id: 28, face: "Three", value: 3 },
+    { name: "C7", suit: "clubs", id: 32, face: "Seven", value: 7 },
+    { name: "CT", suit: "clubs", id: 35, face: "Ten", value: 10 },
+    { name: "CQ", suit: "clubs", id: 37, face: "Queen", value: 12 },
+    { name: "CA", suit: "clubs", id: 39, face: "Ace", value: 14 }
+];
+
+let straigh = [ // 5 карт в порядке возрастания номинала
+    { name: "H5", suit: "hearts", id: 4, face: "Five", value: 5 },
+    { name: "C6", suit: "clubs", id: 31, face: "Six", value: 6 },
+    { name: "D7", suit: "diamonds", id: 19, face: "Seven", value: 7 },
+    { name: "S8", suit: "spades", id: 46, face: "Eight", value: 8 },
+    { name: "D9", suit: "diamonds", id: 21, face: "Nine", value: 9 }
+];
+
+let threeOfAKind = [ // три карты одного номинала
+    { name: "D8", suit: "diamonds", id: 20, face: "Eight", value: 8 },
+    { name: "C8", suit: "clubs", id: 33, face: "Eight", value: 8 },
+    { name: "H8", suit: "hearts", id: 7, face: "Eight", value: 8 }
+];
+
+let twoPair = [ // две карты одного номинала и две карты второго номинала
+    { name: "H3", suit: "hearts", id: 2, face: "Three", value: 3 },
+    { name: "S3", suit: "spades", id: 41, face: "Three", value: 3 },
+    { name: "DK", suit: "diamonds", id: 25, face: "King", value: 13 },
+    { name: "HK", suit: "hearts", id: 12, face: "King", value: 13 }
+];
+
+let onePair = [ // две карты одного номинала
+    { name: "C7", suit: "clubs", id: 32, face: "Seven", value: 7 },
+    { name: "S7", suit: "spades", id: 45, face: "Seven", value: 7 }
 ];
