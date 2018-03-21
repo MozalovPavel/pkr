@@ -144,11 +144,38 @@ function getRandomCards(num, arr) {
     //return cnc;
 }
 // перетосовать колоду
-function shaffle() {
+function getShaffledDeck() {
     return deckGen().sort(function(a, b) {
         return Math.random() - 0.5;
     });
 }
+
+
+// сравнение методов перетасовки 
+function tst(num) {
+    let fst = [];
+    let scn = [];
+    let firstTimerStart = Date.now();
+    for (var i = 0; i < num; i++) {
+        let a = getShaffledDeck()[0].id;
+        if (fst[a]>=0){ fst[a]++}
+        else {fst[a]=0};
+    }
+    let firstTimeEnd = Date.now();
+    console.log(firstTimeEnd-firstTimerStart);
+    let secondTimerStart = Date.now();
+    for (var i = 0; i < num; i++) {
+        let a = getRandomCards(1)[0].id;
+        if (scn[a]>=0){ scn[a]++}
+        else {scn[a]=0};
+    }
+    let secondTimerEnd = Date.now();
+    console.log(secondTimerEnd-secondTimerStart);
+    console.log(fst);
+    console.log(scn);
+    return true;
+}
+
 
 // function test(n) {
 //     let check = 0;
