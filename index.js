@@ -143,6 +143,12 @@ function getRandomCards(num, arr) {
     return newDeck;
     //return cnc;
 }
+// перетосовать колоду
+function shaffle() {
+    return deckGen().sort(function(a, b) {
+        return Math.random() - 0.5;
+    });
+}
 
 // function test(n) {
 //     let check = 0;
@@ -578,6 +584,28 @@ function tt() {
     // console.log(isFH(a[1]));
     return a;
 }
+
+
+// function t1() {
+//     let arr =[0,0,0];
+//     for (var i = 0; i < 1000000; i++) {
+//         let a = Math.random() - 0.5;
+//         if (a<0){ arr[0]++};
+//         if (a==0){ arr[1]++};
+//         if (a>0){ arr[2]++};
+//     }
+//     return arr;
+// }
+// function t2() {
+//     let arr =[0,0,0];
+//     for (var i = 0; i < 1000000; i++) {
+//         let a = Math.round(-1.5 + Math.random() *3);
+//         if (a<0){ arr[0]++};
+//         if (a===0){ arr[1]++};
+//         if (a>0){ arr[2]++};
+//     }
+//     return arr;
+// }
 
 
 let flashRoyale = [ // от 10 до туза одной масти
