@@ -229,7 +229,8 @@ function wr(id, arr) {
 
 //=============
 
-function isFR(arr) {
+function isFR(a) {
+    let arr = copyDeck(a)
     var count = [0,0,0,0];
     for(i = 0 ; i < arr.length; i++){
         switch (arr[i].suit){
@@ -293,7 +294,8 @@ function isFR(arr) {
 
 }
 //------------------------------------
-function isSTFL(arr) {
+function isSTFL(a) {
+    let arr = copyDeck(a);
     var count = [0,0,0,0];
     for(i = 0 ; i < arr.length; i++){
         switch (arr[i].suit){
@@ -357,7 +359,8 @@ function isSTFL(arr) {
 
 }
 //-------------------------------------------
-function isFOAK(arr) {
+function isFOAK(a) {
+    let arr = copyDeck(a);
     let counter = getCounter(arr);
 
     if (getMaxOfArray(counter) === 4){
@@ -374,7 +377,8 @@ function isFOAK(arr) {
 }
 
 //-------------------------------------------
-function isFH(arr) {
+function isFH(a) {
+    let arr = copyDeck(a);
     let counter = getCounter(arr);
 
     let pair = counter.lastIndexOf(2);
@@ -393,7 +397,8 @@ function isFH(arr) {
 }
 //-------------------------------------------
 
-function isFLSH(arr) {
+function isFLSH(a) {
+    let arr = copyDeck(a);
     var count = [0,0,0,0];
     for(i = 0 ; i < arr.length; i++){
         switch (arr[i].suit){
@@ -440,7 +445,8 @@ function isFLSH(arr) {
     return false;
 }
 //______________________________-
-function isSTR(arr) {
+function isSTR(a) {
+    let arr = copyDeck(a);
     let list = [];  // list[2]= наличие двойки
     for (let i = 0; i < arr.length; i++) {
         list[arr[i].value] = 1;
@@ -479,7 +485,8 @@ function isSTR(arr) {
     return false;
 }
 //====================================
-function isTHR(arr) {
+function isTHR(a) {
+    let arr = copyDeck(a);
     let counter = getCounter(arr);
 
     if (getMaxOfArray(counter) === 3){
@@ -495,7 +502,8 @@ function isTHR(arr) {
     return false;
 }
 //---------------------
-function isPRS(arr) {
+function isPRS(a) {
+    let arr = copyDeck(a);
     let counter = getCounter(arr);
 
     if (getMaxOfArray(counter) === 2) {
@@ -527,7 +535,7 @@ function isPRS(arr) {
 }
 //================
 function getHCard(arr){
-    
+
 }
 
 function getComb(arr) {
