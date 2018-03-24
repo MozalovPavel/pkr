@@ -105,7 +105,7 @@ function sortCards(cards, bool) {
         });
     }
     return cards.sort(function(a, b) {
-        return a.value - b.value;
+        return b.value - a.value;
     });
 
 }
@@ -151,26 +151,54 @@ function getShaffledDeck() {
 }
 
 
-// сравнение методов перетасовки 
+// сравнение методов перетасовки
 function tst(num) {
     let fst = [];
     let scn = [];
     let firstTimerStart = Date.now();
     for (var i = 0; i < num; i++) {
         let a = getShaffledDeck()[0].id;
-        if (fst[a]>=0){ fst[a]++}
-        else {fst[a]=0};
+        if (fst[a] >= 0) { fst[a]++ } else {
+            fst[a] = 0
+        }
     }
     let firstTimeEnd = Date.now();
-    console.log(firstTimeEnd-firstTimerStart);
+    console.log(firstTimeEnd - firstTimerStart);
     let secondTimerStart = Date.now();
     for (var i = 0; i < num; i++) {
         let a = getRandomCards(1)[0].id;
-        if (scn[a]>=0){ scn[a]++}
-        else {scn[a]=0};
+        if (scn[a] >= 0) { scn[a]++ } else {
+            scn[a] = 0
+        }
     }
     let secondTimerEnd = Date.now();
-    console.log(secondTimerEnd-secondTimerStart);
+    console.log(secondTimerEnd - secondTimerStart);
+    console.log(fst);
+    console.log(scn);
+    return true;
+}
+
+function tst(num) {
+    let fst = [];
+    let scn = [];
+    let firstTimerStart = Date.now();
+    for (var i = 0; i < num; i++) {
+        let a = getShaffledDeck()[0].id;
+        if (fst[a] >= 0) { fst[a]++ } else {
+            fst[a] = 0
+        }
+    }
+    let firstTimeEnd = Date.now();
+    console.log(firstTimeEnd - firstTimerStart);
+    let secondTimerStart = Date.now();
+    for (var i = 0; i < num; i++) {
+        let a = getRandomCards(1)[0].id;
+        if (scn[a] >= 0) { scn[a]++ } else {
+            scn[a] = 0
+        }
+    }
+    let secondTimerEnd = Date.now();
+    console.log(secondTimerEnd - secondTimerStart);
     console.log(fst);
     console.log(scn);
     return true;
@@ -189,39 +217,6 @@ function tst(num) {
 //     return check;
 // }
 
-function connectDecks(a, b) {
-    let c = [];
-    for (let i = 0; i < a.length; i++) {
-        c[c.length] = {};
-        c[c.length - 1].name = a[i].name;
-        c[c.length - 1].suit = a[i].suit;
-        c[c.length - 1].id = a[i].id;
-        c[c.length - 1].face = a[i].face;
-        c[c.length - 1].value = a[i].value;
-    }
-    for (let i = 0; i < b.length; i++) {
-        c[c.length] = {};
-        c[c.length - 1].name = b[i].name;
-        c[c.length - 1].suit = b[i].suit;
-        c[c.length - 1].id = b[i].id;
-        c[c.length - 1].face = b[i].face;
-        c[c.length - 1].value = b[i].value;
-    }
-    return c;
-}
-
-function copyDeck(a) {
-    let c = [];
-    for (let i = 0; i < a.length; i++) {
-        c[c.length] = {};
-        c[c.length - 1].name = a[i].name;
-        c[c.length - 1].suit = a[i].suit;
-        c[c.length - 1].id = a[i].id;
-        c[c.length - 1].face = a[i].face;
-        c[c.length - 1].value = a[i].value;
-    }
-    return c;
-}
 
 function drawCards(id, cards) {
     let element = document.getElementById(id);
@@ -242,15 +237,15 @@ function g() {
     drawCards("table", table);
     let p1 = getRandomCards(2, table);
     wr('p1Cards', p1);
-    let tp1 = connectDecks(table, p1);
+    let tp1 = table.concat(p1);
     let p2 = getRandomCards(2, tp1);
-    let tp2 = connectDecks(table, p2);
+    let tp2 = table.concat(p2);
     isFR(tp1);
     isFR(tp2);
     wr('p2Cards', p2);
     drawCards("pl1C", p1);
     drawCards("pl2C", p2);
-    return connectDecks(tp1, p2);
+    return tp1.concat(p2);
 }
 
 function wr(id, arr) {
@@ -263,8 +258,8 @@ function wr(id, arr) {
 
 //=============
 
-function isFR(a) {
-    let arr = copyDeck(a);
+function getFlashRoyale(a) {
+    let arr = a.slice(0);
     let count = [0, 0, 0, 0];
     for (let i = 0; i < arr.length; i++) {
         switch (arr[i].suit) {
@@ -302,7 +297,8 @@ function isFR(a) {
         let ost = [];
         for (let i = 0; i < arr.length; i++) {
             if (!(arr[i].suit === popSuit)) {
-                ost = connectDecks(ost, arr.splice(i, 1));
+                ost = ost.concat(arr.splice(i, 1));
+
                 i--;
             }
         }
@@ -317,7 +313,8 @@ function isFR(a) {
             if (list[i] === 1) {
                 cn += 1;
                 if (i === 10) {
-                    return [true, arr, ost, 9];
+
+                    return sortCards(arr).slice(0, 5);
                 }
             } else {
                 cn = 0;
@@ -328,8 +325,8 @@ function isFR(a) {
 
 }
 //------------------------------------
-function isSTFL(a) {
-    let arr = copyDeck(a);
+function getStraightFlush(a) {
+    let arr = a.slice(0);
     let count = [0, 0, 0, 0];
     for (i = 0; i < arr.length; i++) {
         switch (arr[i].suit) {
@@ -367,7 +364,7 @@ function isSTFL(a) {
         let ost = [];
         for (let i = 0; i < arr.length; i++) {
             if (!(arr[i].suit === popSuit)) {
-                ost = connectDecks(ost, arr.splice(i, 1));
+                ost = ost.concat(arr.splice(i, 1));
                 i--;
             }
         }
@@ -382,7 +379,7 @@ function isSTFL(a) {
             if (list[i] === 1) {
                 cn += 1;
                 if (cn === 5) {
-                    return [true, arr, ost, 8];
+                    return sortCards(arr).slice(0, 5);
                 }
             } else {
                 cn = 0;
@@ -393,46 +390,52 @@ function isSTFL(a) {
 
 }
 //-------------------------------------------
-function isFOAK(a) {
-    let arr = copyDeck(a);
+function getQuads(a) {
+    let arr = a.slice(0);
     let counter = getCounter(arr);
-
     if (getMaxOfArray(counter) === 4) {
         let ost = [];
         for (let i = 0; i < arr.length; i++) {
             if (!(arr[i].value === counter.indexOf(4))) {
-                ost = connectDecks(ost, arr.splice(i, 1));
+                ost = ost.concat(arr.splice(i, 1));
                 i--;
             }
         }
-        return [true, arr, ost, 7];
+        // return arr.concat(sortCards(ost).shift())  делает херню, если на хводе было меньше 5 карт
+        return arr.concat(sortCards(ost).slice(0, 1));
     }
     return false;
 }
 
 //-------------------------------------------
-function isFH(a) {
-    let arr = copyDeck(a);
+function getFullHouse(a) {
+    let arr = a.slice(0);
     let counter = getCounter(arr);
-
     let pair = counter.lastIndexOf(2);
-    let threes = counter.lastIndexOf(3)
-    if (threes > 0 && pair > 0) {
-        let ost = [];
+    let set = counter.lastIndexOf(3);
+    if (set > 0 && pair > 0) {
+        let fullHouse = [];
         for (let i = 0; i < arr.length; i++) {
-            if (!((arr[i].value === threes) || (arr[i].value === pair))) {
-                ost = connectDecks(ost, arr.splice(i, 1));
+            if (arr[i].value === set) {
+                fullHouse = fullHouse.concat(arr.splice(i, 1));
                 i--;
             }
         }
-        return [true, arr, ost, 6];
+        for (let i = 0; i < arr.length; i++) {
+            if (arr[i].value === pair) {
+                fullHouse = fullHouse.concat(arr.splice(i, 1));
+                i--;
+            }
+        }
+
+        return fullHouse; // есть подозрение, что эта херня может не правльно работать, но это не точно
     }
     return false;
 }
 //-------------------------------------------
 
-function isFLSH(a) {
-    let arr = copyDeck(a);
+function getFlush(a) {
+    let arr = a.slice(0);
     let count = [0, 0, 0, 0];
     for (i = 0; i < arr.length; i++) {
         switch (arr[i].suit) {
@@ -470,17 +473,17 @@ function isFLSH(a) {
         let ost = [];
         for (let i = 0; i < arr.length; i++) {
             if (!(arr[i].suit === popSuit)) {
-                ost = connectDecks(ost, arr.splice(i, 1));
+                ost = ost.concat(arr.splice(i, 1));
                 i--;
             }
         }
-        return [true, arr, ost, 5];
+        return sortCards(arr).slice(0, 5);
     }
     return false;
 }
 //______________________________-
-function isSTR(a) {
-    let arr = copyDeck(a);
+function getStraight(a) {
+    let arr = a.slice(0);
     let list = []; // list[2]= наличие двойки
     for (let i = 0; i < arr.length; i++) {
         list[arr[i].value] = 1;
@@ -494,23 +497,24 @@ function isSTR(a) {
                 let ost = [];
                 for (let j = 0; j < arr.length; j++) {
                     if (arr[j].value < i || arr[j].value > (i + 5)) {
-                        ost = connectDecks(ost, arr.splice(j, 1));
+                        ost = ost.concat(arr.splice(j, 1));
                         j--;
                     }
                 }
                 let counter = getCounter(arr);
 
-                while (getMaxOfArray(counter) > 1) {
+                while (getMaxOfArray(counter) > 1) { // вот эта хуйня чистит вывод от "ненужных" мастей, ее надо поправить или нет
+
                     for (let j = 0; j < arr.length; j++) {
                         if (arr[j].value === counter.lastIndexOf(getMaxOfArray(counter))) {
-                            ost = connectDecks(ost, arr.splice(j, 1));
+                            ost = ost.concat(arr.splice(j, 1));
                             counter[counter.lastIndexOf(getMaxOfArray(counter))]--;
                             break;
                         }
                     }
                 }
 
-                return [true, arr, ost, 4];
+                return sortCards(arr).slice(0, 5);
             }
         } else {
             cn = 0;
@@ -519,64 +523,139 @@ function isSTR(a) {
     return false;
 }
 //====================================
-function isTHR(a) {
-    let arr = copyDeck(a);
+function getSet(a) {
+    let arr = a.slice(0);
     let counter = getCounter(arr);
 
     if (getMaxOfArray(counter) === 3) {
         let ost = [];
         for (let i = 0; i < arr.length; i++) {
             if (!(arr[i].value === counter.lastIndexOf(3))) {
-                ost = connectDecks(ost, arr.splice(i, 1));
+                ost = ost.concat(arr.splice(i, 1));
                 i--;
             }
         }
-        return [true, arr, ost, 3];
+        return arr.concat(sortCards(ost).slice(0, 2));
     }
     return false;
 }
 //---------------------
-function isPRS(a) {
-    let arr = copyDeck(a);
+function getTwoPair(a) {
+    let arr = a.slice(0);
     let counter = getCounter(arr);
-
+    let ost = [];
+    if (getMaxOfArray(counter) === 2) {
+        for (let i = 0; i < arr.length; i++) {
+            if (!(arr[i].value === counter.lastIndexOf(2))) {
+                ost = ost.concat(arr.splice(i, 1));
+                i--;
+            }
+        }
+    }
+    counter = getCounter(ost);
+    if (getMaxOfArray(counter) === 2) {
+        let ost2 = [];
+        for (let i = 0; i < ost.length; i++) {
+            if (!(ost[i].value === counter.lastIndexOf(2))) {
+                ost2 = ost2.concat(ost.splice(i, 1));
+                i--;
+            }
+        }
+        return arr.concat(ost).concat(sortCards(ost2).slice(0, 1));
+    }
+    return false;
+}
+//===================
+function getPair(a) {
+    let arr = a.slice(0);
+    let counter = getCounter(arr);
     if (getMaxOfArray(counter) === 2) {
         let ost = [];
         for (let i = 0; i < arr.length; i++) {
             if (!(arr[i].value === counter.lastIndexOf(2))) {
-                ost = connectDecks(ost, arr.splice(i, 1));
+                ost = ost.concat(arr.splice(i, 1));
                 i--;
             }
         }
-        counter = getCounter(ost);
-        if (getMaxOfArray(counter) === 2) {
-            let ost2 = []
-            for (let i = 0; i < ost.length; i++) {
-                if (!(ost[i].value === counter.lastIndexOf(2))) {
-                    ost2 = connectDecks(ost2, ost.splice(i, 1));
-                    i--;
-                }
-            }
-            console.log(arr);
-            console.log(ost);
-            arr = connectDecks(arr, ost);
-            console.log(arr);
-            return [true, arr, ost2, 2];
-        }
-        return [true, arr, ost, 1];
+        return arr.concat(sortCards(ost).slice(0, 3));
     }
     return false;
 }
 //================
 function getHCard(a) {
-    let arr = copyDeck(a);
-    return sortCards(arr)[arr.length - 1];
+    let arr = a.slice(0);
+    return sortCards(arr)[0];
 
 }
 
 function getComb(arr) {
+    let a = {};
 
+    if (getFlashRoyale(arr)) {
+        a.comb = getFlashRoyale(arr);
+        a.value = 9;
+        return a;
+    }
+    if (getStraightFlush(arr)) {
+        a.comb = getStraightFlush(arr);
+        a.value = 8;
+        return a;
+    }
+    if (getQuads(arr)) {
+        a.comb = getQuads(arr);
+        a.value = 7;
+        return a;
+    }
+    if (getFullHouse(arr)) {
+        a.comb = getFullHouse(arr);
+        a.value = 6;
+        return a;
+    }
+    if (getFlush(arr)) {
+        a.comb = getFlush(arr);
+        a.value = 5;
+        return a;
+    }
+    if (getStraight(arr)) {
+        a.comb = getStraight(arr);
+        a.value = 4;
+        return a;
+    }
+    if (getSet(arr)) {
+        a.comb = getSet(arr);
+        a.value = 3;
+        return a;
+    }
+    if (getTwoPair(arr)) {
+        a.comb = getTwoPair(arr);
+        a.value = 2;
+        return a;
+    }
+    if (getPair(arr)) {
+        a.comb = getPair(arr);
+        a.value = 1;
+        return a;
+    }
+    a.comb = sortCards(arr).slice(0, 5);
+    a.value = 0;
+    return a;
+}
 
+function t() {
+    let a = getRandomCards(7);
+    let t = {};
+    t.flashRoyale = getFlashRoyale(a);
+    t.straightFlush = getStraightFlush(a);
+    t.quads = getQuads(a);
+    t.fullHouse = getFullHouse(a);
+    t.flush = getFlush(a);
+    t.straight = getStraight(a);
+    t.set = getSet(a);
+    t.twoPairs = getTwoPair(a);
+    t.pair = getPair(a);
+    console.log(a);
+    console.log(getComb(a));
+    return t;
 }
 
 function get5TopCards(arr, ost) {
@@ -633,6 +712,7 @@ function tt() {
 //     }
 //     return arr;
 // }
+
 
 
 let flashRoyale = [ // от 10 до туза одной масти
@@ -699,3 +779,32 @@ let onePair = [ // две карты одного номинала
     { name: "C7", suit: "clubs", id: 32, face: "Seven", value: 7 },
     { name: "S7", suit: "spades", id: 45, face: "Seven", value: 7 }
 ];
+
+let sf = [ //5 карт одной масти в порядке возрастания номинала
+    { name: "D8", suit: "diamonds", id: 20, face: "Eight", value: 8 },
+    { name: "D9", suit: "diamonds", id: 21, face: "Nine", value: 9 },
+    { name: "DT", suit: "diamonds", id: 22, face: "Ten", value: 10 },
+    { name: "DJ", suit: "diamonds", id: 23, face: "Jack", value: 11 },
+    { name: "DQ", suit: "diamonds", id: 24, face: "Queen", value: 12 },
+    { name: "DK", suit: "diamonds", id: 25, face: "King", value: 13 }
+];
+
+let aaa = [
+    { name: "D9", suit: "diamonds", id: 21, face: "Nine", value: 9 },
+    { name: "S6", suit: "spades", id: 44, face: "Six", value: 6 },
+    { name: "D2", suit: "diamonds", id: 14, face: "Two", value: 2 },
+    { name: "C9", suit: "clubs", id: 34, face: "Nine", value: 9 },
+    { name: "S7", suit: "spades", id: 45, face: "Seven", value: 7 },
+    { name: "DT", suit: "diamonds", id: 22, face: "Ten", value: 10 },
+    { name: "C2", suit: "clubs", id: 27, face: "Two", value: 2 }
+];
+
+let hm = [
+    { name: "D3", suit: "diamonds", id: 15, face: "Three", value: 3 },
+    { name: "C3", suit: "clubs", id: 28, face: "Three", value: 3 },
+    { name: "CJ", suit: "clubs", id: 36, face: "Jack", value: 11 },
+    { name: "D8", suit: "diamonds", id: 20, face: "Eight", value: 8 },
+    { name: "DJ", suit: "diamonds", id: 23, face: "Jack", value: 11 },
+    { name: "D2", suit: "diamonds", id: 14, face: "Two", value: 2 },
+    { name: "HJ", suit: "hearts", id: 10, face: "Jack", value: 11 }
+]
