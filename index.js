@@ -258,72 +258,117 @@ function wr(id, arr) {
 
 //=============
 
-function getFlashRoyale(a) {
+// function getFlashRoyale(a) {   // дерьмо переделать !!
+//     let arr = a.slice(0);
+//     let count = [0, 0, 0, 0];
+//     for (let i = 0; i < arr.length; i++) {
+//         switch (arr[i].suit) {
+//             case "hearts":
+//                 count[0] += 1;
+//                 break;
+//             case "diamonds":
+//                 count[1] += 1;
+//                 break;
+//             case "clubs":
+//                 count[2] += 1;
+//                 break;
+//             case "spades":
+//                 count[3] += 1;
+//                 break;
+//         }
+//     }
+//     let max = getMaxOfArray(count);
+//     if (max > 4) {
+//         let popSuit = '';
+//         switch (max) {
+//             case count[0]:
+//                 popSuit = "hearts";
+//                 break;
+//             case count[1]:
+//                 popSuit = "diamonds";
+//                 break;
+//             case count[2]:
+//                 popSuit = "clubs";
+//                 break;
+//             case count[3]:
+//                 popSuit = "spades";
+//                 break;
+//         }
+//         let ost = [];
+//         for (let i = 0; i < arr.length; i++) {
+//             if (!(arr[i].suit === popSuit)) {
+//                 ost = ost.concat(arr.splice(i, 1));
+//
+//                 i--;
+//             }
+//         }
+//
+//         let list = []; // list[2]= наличие двойки
+//         for (let i = 0; i < arr.length; i++) {
+//             list[arr[i].value] = 1;
+//         }
+//         list[1] = list[14];
+//         let cn = 0;
+//         for (let i = list.length - 1; i >= 0; i--) {
+//             if (list[i] === 1) {
+//                 cn += 1;
+//                 if (i === 10) {
+//
+//                     return sortCards(arr).slice(0, 5);
+//                 }
+//             } else {
+//                 cn = 0;
+//             }
+//         }
+//     }
+//     return false;
+//
+// }
+function getFlashRoyale(a) {    // тоже дерьмо но работает
     let arr = a.slice(0);
-    let count = [0, 0, 0, 0];
-    for (let i = 0; i < arr.length; i++) {
-        switch (arr[i].suit) {
-            case "hearts":
-                count[0] += 1;
-                break;
-            case "diamonds":
-                count[1] += 1;
-                break;
-            case "clubs":
-                count[2] += 1;
-                break;
-            case "spades":
-                count[3] += 1;
-                break;
-        }
+    let ic = [];
+    for (var i = 0; i < arr.length; i++) {
+        ic[arr[i].id] = 1;
     }
-    let max = getMaxOfArray(count);
-    if (max > 4) {
-        let popSuit = '';
-        switch (max) {
-            case count[0]:
-                popSuit = "hearts";
-                break;
-            case count[1]:
-                popSuit = "diamonds";
-                break;
-            case count[2]:
-                popSuit = "clubs";
-                break;
-            case count[3]:
-                popSuit = "spades";
-                break;
-        }
-        let ost = [];
-        for (let i = 0; i < arr.length; i++) {
-            if (!(arr[i].suit === popSuit)) {
-                ost = ost.concat(arr.splice(i, 1));
-
-                i--;
-            }
-        }
-
-        let list = []; // list[2]= наличие двойки
-        for (let i = 0; i < arr.length; i++) {
-            list[arr[i].value] = 1;
-        }
-        list[1] = list[14];
-        let cn = 0;
-        for (let i = list.length - 1; i >= 0; i--) {
-            if (list[i] === 1) {
-                cn += 1;
-                if (i === 10) {
-
-                    return sortCards(arr).slice(0, 5);
-                }
-            } else {
-                cn = 0;
-            }
-        }
+    if (ic[13]===1 && ic[12]===1 && ic[11]===1 && ic[10]===1 && ic[9]===1){
+        return [
+            {name: "HA", suit: "hearts", id: 13, face: "Ace", value: 14},
+            {name: "HK", suit: "hearts", id: 12, face: "King", value: 13},
+            {name: "HQ", suit: "hearts", id: 11, face: "Queen", value: 12},
+            {name: "HJ", suit: "hearts", id: 10, face: "Jack", value: 11},
+            {name: "HT", suit: "hearts", id: 9, face: "Ten", value: 10}
+        ];
+    }
+    if (ic[26]===1 && ic[25]===1 && ic[24]===1 && ic[23]===1 && ic[22]===1){
+        return [
+            { name: "DA", suit: "diamonds", id: 26, face: "Ace", value: 14 },
+            { name: "DK", suit: "diamonds", id: 25, face: "King", value: 13 },
+            { name: "DQ", suit: "diamonds", id: 24, face: "Queen", value: 12 },
+            { name: "DJ", suit: "diamonds", id: 23, face: "Jack", value: 11 },
+            { name: "DT", suit: "diamonds", id: 22, face: "Ten", value: 10 }
+        ];
+    }
+    if (ic[39]===1 && ic[38]===1 && ic[37]===1 && ic[36]===1 && ic[35]===1){
+        return [
+            {name: "CA", suit: "clubs", id: 39, face: "Ace", value: 14},
+            {name: "CK", suit: "clubs", id: 38, face: "King", value: 13},
+            {name: "CQ", suit: "clubs", id: 37, face: "Queen", value: 12},
+            {name: "CJ", suit: "clubs", id: 36, face: "Jack", value: 11},
+            {name: "CT", suit: "clubs", id: 35, face: "Ten", value: 10}
+        ];
+    }
+    if (ic[13]===1 && ic[12]===1 && ic[11]===1 && ic[10]===1 && ic[9]===1){
+        return [
+            {name: "SA", suit: "spades", id: 52, face: "Ace", value: 14},
+            {name: "SK", suit: "spades", id: 51, face: "King", value: 13},
+            {name: "SQ", suit: "spades", id: 50, face: "Queen", value: 12},
+            {name: "SJ", suit: "spades", id: 49, face: "Jack", value: 11},
+            {name: "ST", suit: "spades", id: 48, face: "Ten", value: 10}
+        ];
     }
     return false;
-
 }
+
 //------------------------------------
 function getStraightFlush(a) {
     let arr = a.slice(0);
