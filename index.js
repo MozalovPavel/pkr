@@ -686,6 +686,21 @@ function getComb(arr) {
     return a;
 }
 
+
+function compareCombinations(aa,bb) {  //true - первая сильнее, false - вторая, 0 - ничья
+    let a = getComb(aa);
+    let b = getComb(bb);
+    if (a.value === b.value){
+        for (var i = 0; i < 5; i++) {
+            if ( !(a.comb[i].value === b.comb[i].value) ){
+                return a.comb[i].value > b.comb[i].value;
+            }
+        }
+        return 0;
+    }
+    return a.value>b.value;
+}
+
 function t() {
     let a = getRandomCards(7);
     let t = {};
