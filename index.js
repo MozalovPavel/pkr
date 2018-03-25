@@ -116,42 +116,12 @@ function randomInteger(min, max) {
     return rand;
 }
 
-function getRandomCards(num, arr) {
-    let deck = sortCards(deckGen(), true);
-    if (num > deck.length) { num = deck.length }
-    let check = [];
-    let newDeck = [];
-    if (arr) {
-        // if (typeof(arr) == "object") {
-        if (num > deck.length - arr.length) { num = deck.length - arr.length }
-
-        for (let i = 0; i < arr.length; i++) {
-            check[arr[i].id] = true;
-        }
-    }
-    //let cnc = 0;
-    while (newDeck.length < num) {
-        // можно реализовать просто брать сверху колоды
-        let r = randomInteger(1, 52);
-        //cnc++;
-        if (!check[r]) {
-            // console.log(r);
-            check[r] = true;
-            newDeck.push(deck[r - 1]);
-        }
-    }
-    return newDeck;
-    //return cnc;
-}
-// перетосовать колоду
 function getShaffledDeck() {
-    return deckGen().sort(function(a, b) {
+    return generationDeck().sort(function(a, b) {
         return Math.random() - 0.5;
     });
 }
 
-
-// сравнение методов перетасовки
 function tst(num) {
     let fst = [];
     let scn = [];
@@ -205,18 +175,52 @@ function tst(num) {
 }
 
 
-// function test(n) {
-//     let check = 0;
-//     for (let i = 0; i < n; i++) {
-//         let a = getRandomCards(9);
-//         if (a>check){
-//             check=a;
-//         }
-//
-//     }
-//     return check;
-// }
+function test(n) {
+    let check = 0;
+    for (let i = 0; i < n; i++) {
+        let a = getRandomCards(9);
+        if (a>check){
+            check=a;
+        }
 
+    }
+    return check;
+}
+
+function connectDecks(a, b) {
+    let c = [];
+
+    for (let i = 0; i < a.length; i++) {
+        c[c.length] = {};
+        c[c.length - 1].name = a[i].name;
+        c[c.length - 1].suit = a[i].suit;
+        c[c.length - 1].id = a[i].id;
+        c[c.length - 1].face = a[i].face;
+        c[c.length - 1].value = a[i].value;
+    }
+    for (let i = 0; i < b.length; i++) {
+        c[c.length] = {};
+        c[c.length - 1].name = b[i].name;
+        c[c.length - 1].suit = b[i].suit;
+        c[c.length - 1].id = b[i].id;
+        c[c.length - 1].face = b[i].face;
+        c[c.length - 1].value = b[i].value;
+    }
+    return c;
+}
+
+function copyDeck(a) {
+    let c = [];
+    for (let i = 0; i < a.length; i++) {
+        c[c.length] = {};
+        c[c.length - 1].name = a[i].name;
+        c[c.length - 1].suit = a[i].suit;
+        c[c.length - 1].id = a[i].id;
+        c[c.length - 1].face = a[i].face;
+        c[c.length - 1].value = a[i].value;
+    }
+    return c;
+}
 
 function drawCards(id, cards) {
     let element = document.getElementById(id);
@@ -257,6 +261,8 @@ function wr(id, arr) {
 }
 
 //=============
+// DONE
+function isFlashRoyal(cards) {
 
 // function getFlashRoyale(a) {   // дерьмо переделать !!
 //     let arr = a.slice(0);
@@ -478,6 +484,20 @@ function getFullHouse(a) {
     return false;
 }
 //-------------------------------------------
+// DONE
+function isFlush(cards) {
+    cards = cards.slice();
+
+    let suitsCounts = {
+        hearts: 0,
+        diamonds: 0,
+        clubs: 0,
+        spades: 0
+    };
+
+    cards.forEach(card => {
+        suitsCounts[card.suit]++;
+    });
 
 function getFlush(a) {
     let arr = a.slice(0);
@@ -524,11 +544,22 @@ function getFlush(a) {
         }
         return sortCards(arr).slice(0, 5);
     }
-    return false;
+
+    return {
+        suit: flashSuit,
+        cards: cards
+            .filter(card => card.suit === flashSuit)
+            .sort((firstCard, secondCard) => {
+                return secondCard.value - firstCard.value;
+            })
+            .slice(0, 5)
+    };
 }
 //______________________________-
-function getStraight(a) {
-    let arr = a.slice(0);
+// DONE
+function isStraight(cards) {
+    cards = cards.slice();
+    
     let list = []; // list[2]= наличие двойки
     for (let i = 0; i < arr.length; i++) {
         list[arr[i].value] = 1;
@@ -567,9 +598,10 @@ function getStraight(a) {
     }
     return false;
 }
-//====================================
-function getSet(a) {
-    let arr = a.slice(0);
+
+// //====================================
+function isTHR(a) {
+    let arr = copyDeck(a);
     let counter = getCounter(arr);
 
     if (getMaxOfArray(counter) === 3) {
